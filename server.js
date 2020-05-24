@@ -4,6 +4,13 @@ const express = require('express');
 // Creates an express constructor instance called 'app'
 const app = express();
 
+// A POST request can send data securely through the request body. 
+// In order to make POST requests, first we need to include the "body-parser" library from our node_modules (included with express). 
+
+const bodyParser = require('body_parser');
+app.use(bodyParser.json()); 
+
+
 const mockUserData  = [
     {name: 'Ver'},
     {name: 'Len '}
@@ -29,6 +36,28 @@ app.get('/users/:id',function(req,res){
 		message: 'got one user',
 		user: req.params.id
 	})
+})
+
+app.post('/login', function(req,res){
+    const username = req.body.username;
+    const password = req.body.password;
+
+    const mockUserName = 'captain marvel';
+    const mockPassword = 'sherlocked';
+
+    if (username===mockUserName && password===mockPassword){
+        res.json({
+            success: true,
+            message: 'username and password match',
+            token: 'encrypted token goes here'
+        })
+    }
+    else {
+        res.json({
+            success: false,
+            message: 'username and password do not match'
+        })
+    }
 })
 // app.listen method will start up the server locally 
 // with the port which is provided by us as the first arg in this case 8000
